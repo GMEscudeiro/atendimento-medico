@@ -18,9 +18,10 @@ void in_ordem(EABB *raiz) {
   if(raiz == NULL){
     return;
   }else{
-    in_ordem_ano(raiz->filhoesq);
-    printf("%d ", raiz->valor);
-    in_ordem_ano(raiz->filhodir);
+    in_ordem(raiz->filhoesq);
+    printf("Nome: %s RG: %s Entrada: %d/%d/%d\n", raiz->dados->nome, raiz->dados->rg, raiz->dados->entrada->dia,
+      raiz->dados->entrada->mes, raiz->dados->entrada->ano);
+    in_ordem(raiz->filhodir);
   }
 }
 
@@ -59,6 +60,81 @@ void inserir_ano(ABB* arvore, Registro* dados){
       }
     }
     if(dados->entrada->ano <= anterior->dados->entrada->ano){
+      anterior->filhoesq = novo;
+    }else{
+      anterior->filhodir = novo;
+    }
+    novo->pai = anterior;
+  }
+  arvore->qtde++;
+}
+
+void inserir_mes(ABB* arvore, Registro* dados){
+  EABB* novo = cria_vertice(dados);
+  if(arvore->raiz == NULL){
+    arvore->raiz = novo;
+  }else{
+    EABB* atual = arvore->raiz;
+    EABB* anterior = NULL;
+    while(atual != NULL){
+      anterior = atual;
+      if(dados->entrada->mes <= atual->dados->entrada->mes){
+        atual = atual->filhoesq;
+      }else{
+        atual = atual->filhodir;
+      }
+    }
+    if(dados->entrada->mes <= anterior->dados->entrada->mes){
+      anterior->filhoesq = novo;
+    }else{
+      anterior->filhodir = novo;
+    }
+    novo->pai = anterior;
+  }
+  arvore->qtde++;
+}
+
+void inserir_dia(ABB* arvore, Registro* dados){
+  EABB* novo = cria_vertice(dados);
+  if(arvore->raiz == NULL){
+    arvore->raiz = novo;
+  }else{
+    EABB* atual = arvore->raiz;
+    EABB* anterior = NULL;
+    while(atual != NULL){
+      anterior = atual;
+      if(dados->entrada->dia <= atual->dados->entrada->dia){
+        atual = atual->filhoesq;
+      }else{
+        atual = atual->filhodir;
+      }
+    }
+    if(dados->entrada->dia <= anterior->dados->entrada->dia){
+      anterior->filhoesq = novo;
+    }else{
+      anterior->filhodir = novo;
+    }
+    novo->pai = anterior;
+  }
+  arvore->qtde++;
+}
+
+void inserir_idade(ABB* arvore, Registro* dados){
+  EABB* novo = cria_vertice(dados);
+  if(arvore->raiz == NULL){
+    arvore->raiz = novo;
+  }else{
+    EABB* atual = arvore->raiz;
+    EABB* anterior = NULL;
+    while(atual != NULL){
+      anterior = atual;
+      if(dados->idade <= atual->dados->idade){
+        atual = atual->filhoesq;
+      }else{
+        atual = atual->filhodir;
+      }
+    }
+    if(dados->idade <= anterior->dados->idade){
       anterior->filhoesq = novo;
     }else{
       anterior->filhodir = novo;
@@ -121,20 +197,6 @@ Registro* remover_vertice(ABB* arvore, EABB* vertice) {
   }
   arvore->qtde--;
   return tempvalor;
-}
-
-EABB *buscar_valor(ABB* arvore, int valor){
-  EABB* atual = arvore->raiz;
-  while(atual != NULL){
-    if(valor < atual->valor){
-      atual = atual->filhoesq;
-    }else if(valor > atual->valor){
-      atual = atual->filhodir;
-    }else{
-      return atual;
-    }
-  }
-  return NULL;
 }
 
 void liberar_arvore(EABB* vertice) {
