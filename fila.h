@@ -9,8 +9,8 @@ typedef struct EFila{
 } EFila;
 
 typedef struct{
-    EFila head;
-    EFila tail;
+    EFila* head;
+    EFila* tail;
     int qtde;
 } Fila;
 
@@ -29,8 +29,13 @@ Fila *cria_fila(){
   return fila;
 }
 
-void enqueue(Fila *fila, int valor){
-    EFila *efilaNova = cria_efila(valor);
+void enqueue(Lista *lista, Fila *fila, int valor){
+    printf("Digite o RG do paciente: ");
+    char rg[9];
+    scanf("%s", rg);
+    ELista *paciente = procura_paciente(lista, rg);
+    Registro *dados = paciente->dados;
+    EFila *efilaNova = cria_efila(dados);
     if(fila->head == NULL){
         fila->head = efilaNova;
     }else{
@@ -40,11 +45,11 @@ void enqueue(Fila *fila, int valor){
     fila->qtde++;
 }
 
-int dequeue(Fila *fila){
+Registro* dequeue(Fila *fila){
     if(fila->head == NULL){
         return -1;
     }
-    int valor = fila->head->valor; // variavel que ira ser retornada
+    Registro* valor = fila->head->dados; // variavel que ira ser retornada
     EFila *temp = fila->head; // efila que sera removida
     fila->head = fila->head->proximo;
     if(fila->head->proximo == NULL){
@@ -55,4 +60,13 @@ int dequeue(Fila *fila){
     return valor;
 }
 
+void show(Fila *fila){
+    EFila *atual = fila->head;
+    printf("Fila de atendimento: ");
+    while(atual != NULL){
+        printf("%s", atual->dados->nome);
+        atual = atual->proximo;
+    }
+    printf("\n");
+}
 #endif

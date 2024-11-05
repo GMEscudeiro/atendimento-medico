@@ -3,9 +3,10 @@
 #include <registro.h>
 
 typedef struct EABB{
-  Registro* dados
+  Registro* dados;
   struct EABB* filhoesq;
   struct EABB* filhodir;
+  struct EABB* pai;
 } EABB;
 
 typedef struct ABB{
@@ -17,38 +18,19 @@ void in_ordem(EABB *raiz) {
   if(raiz == NULL){
     return;
   }else{
-    in_ordem(raiz->esq);
+    in_ordem_ano(raiz->filhoesq);
     printf("%d ", raiz->valor);
-    in_ordem(raiz->dir);
+    in_ordem_ano(raiz->filhodir);
   }
 }
 
-void pre_ordem(EABB *raiz) {
-  if(raiz == NULL){
-    return;
-  }else{
-    printf("%d ", raiz->valor);
-    pre_ordem(raiz->esq);
-    pre_ordem(raiz->dir);
-  }
-}
 
-void pos_ordem(EABB *raiz) {
-  if(raiz == NULL){
-    return;
-  }else{
-    pos_ordem(raiz->esq);
-    pos_ordem(raiz->dir);
-    printf("%d ", raiz->valor);
-  }
-}
-
-EABB *cria_vertice(int valor){
+EABB *cria_vertice(Registro* dados){
   EABB* novo = malloc(sizeof(EABB));
-  novo->dir = NULL;
-  novo->esq = NULL;
+  novo->filhodir = NULL;
+  novo->filhoesq = NULL;
   novo->pai = NULL;
-  novo->valor = valor;
+  novo->dados = dados;
 
   return novo;
 }
@@ -61,8 +43,8 @@ ABB *cria_arvore(){
   return arvore;
 }
 
-void inserir(ABB* arvore, int valor){
-  EABB* novo = cria_vertice(valor);
+void inserir_ano(ABB* arvore, Registro* dados){
+  EABB* novo = cria_vertice(dados);
   if(arvore->raiz == NULL){
     arvore->raiz = novo;
   }else{
@@ -70,70 +52,70 @@ void inserir(ABB* arvore, int valor){
     EABB* anterior = NULL;
     while(atual != NULL){
       anterior = atual;
-      if(valor <= atual->valor){
-        atual = atual->esq;
+      if(dados->entrada->ano <= atual->dados->entrada->ano){
+        atual = atual->filhoesq;
       }else{
-        atual = atual->dir;
+        atual = atual->filhodir;
       }
     }
-    if(valor <= anterior->valor){
-      anterior->esq = novo;
+    if(dados->entrada->ano <= anterior->dados->entrada->ano){
+      anterior->filhoesq = novo;
     }else{
-      anterior->dir = novo;
+      anterior->filhodir = novo;
     }
     novo->pai = anterior;
   }
   arvore->qtde++;
 }
 
-int remover_vertice(ABB* arvore, EABB* vertice) {
+Registro* remover_vertice(ABB* arvore, EABB* vertice) {
   if(vertice == NULL){
     return -1;
   }
-  int tempvalor = vertice->valor;
-  if(vertice->esq == NULL && vertice->dir == NULL){
+  Registro *tempvalor = vertice->dados;
+  if(vertice->filhoesq == NULL && vertice->filhodir == NULL){
     if(arvore->raiz == vertice){
       arvore->raiz = NULL;
-    }else if(vertice->pai->esq == vertice){
-      vertice->pai->esq = NULL;
+    }else if(vertice->pai->filhoesq == vertice){
+      vertice->pai->filhoesq = NULL;
     }else{
-      vertice->pai->dir = NULL;
+      vertice->pai->filhodir = NULL;
     }
     free(vertice);
   }else{
-    if(vertice->esq == NULL || vertice->dir == NULL){
-      if(vertice->esq != NULL){
+    if(vertice->filhoesq == NULL || vertice->filhodir == NULL){
+      if(vertice->filhoesq != NULL){
         if(arvore->raiz == vertice){
-          arvore->raiz = vertice->esq;
-          vertice->esq->pai = NULL;
+          arvore->raiz = vertice->filhoesq;
+          vertice->filhoesq->pai = NULL;
         }else{
-          vertice->esq->pai = vertice->pai;
-          if(vertice->pai->esq == vertice){
-            vertice->pai->esq = vertice->esq;
+          vertice->filhoesq->pai = vertice->pai;
+          if(vertice->pai->filhoesq == vertice){
+            vertice->pai->filhoesq = vertice->filhoesq;
           }else{
-            vertice->pai->dir = vertice->esq;
+            vertice->pai->filhodir = vertice->filhoesq;
           }
         }
       }else{
         if(arvore->raiz == vertice){
-          arvore->raiz = vertice->dir;
-          vertice->dir->pai = NULL;
+          arvore->raiz = vertice->filhodir;
+          vertice->filhodir->pai = NULL;
         }else{
-          vertice->dir->pai = vertice->pai;
-          if(vertice->pai->esq == vertice){
-            vertice->pai->esq = vertice->dir;
+          vertice->filhodir->pai = vertice->pai;
+          if(vertice->pai->filhoesq == vertice){
+            vertice->pai->filhoesq = vertice->filhodir;
           }else{
-            vertice->pai->dir = vertice->dir;
+            vertice->pai->filhodir = vertice->filhodir;
           }
         }
       }
       free(vertice);
     }else{
-      EABB* proximo = vertice->esq;
-      while(proximo->dir != NULL){
-        proximo = proximo->dir;
+      EABB* proximo = vertice->filhoesq;
+      while(proximo->filhodir != NULL){
+        proximo = proximo->filhodir;
       }
-      vertice->valor = proximo->valor;
+      vertice->dados = proximo->dados;
       remover_vertice(arvore, proximo);
     }
   }
@@ -145,9 +127,9 @@ EABB *buscar_valor(ABB* arvore, int valor){
   EABB* atual = arvore->raiz;
   while(atual != NULL){
     if(valor < atual->valor){
-      atual = atual->esq;
+      atual = atual->filhoesq;
     }else if(valor > atual->valor){
-      atual = atual->dir;
+      atual = atual->filhodir;
     }else{
       return atual;
     }
@@ -157,8 +139,8 @@ EABB *buscar_valor(ABB* arvore, int valor){
 
 void liberar_arvore(EABB* vertice) {
     if (vertice != NULL) {
-        liberar_arvore(vertice->esq);
-        liberar_arvore(vertice->dir);
+        liberar_arvore(vertice->filhoesq);
+        liberar_arvore(vertice->filhodir);
         free(vertice);
     }
 }
