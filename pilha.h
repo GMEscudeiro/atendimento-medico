@@ -29,15 +29,16 @@ void push(Pilha *stack, Registro* dados, int op){
   stack->qtde++;
 }
 
-Celula *pop(Pilha *stack){
+Registro *pop(Pilha *stack){
   if(stack->qtde == 0){
     return NULL;
   }
   Celula *temp = stack->topo;
+  Registro *dados = temp->dados;
   stack->topo = temp->anterior;
   free(temp);
   stack->qtde--;
-  return temp;
+  return dados;
 }
 
 #endif

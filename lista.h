@@ -63,9 +63,9 @@ void mostra_paciente(Lista *lista) {
         printf("Paciente não encontrado\n");
     }else {
         printf("Nome: %s\n", paciente->dados->nome);
-        printf("Idade: %i\n", paciente->dados->idade);
+        printf("Idade: %d\n", paciente->dados->idade);
         printf("RG: %s\n", paciente->dados->rg);
-        printf("Entrada: %i/%i/%i\n", paciente->dados->entrada->dia,paciente->dados->entrada->mes,paciente->dados->entrada->ano);
+        printf("Entrada: %02d/%02d/%04d\n", paciente->dados->entrada->dia,paciente->dados->entrada->mes,paciente->dados->entrada->ano);
     }
 }
 
@@ -74,9 +74,9 @@ void mostrar_lista(Lista *lista) {
     printf("Pacientes cadastrados:\n");
     while (atual != NULL){
         printf("Nome: %s\n", atual->dados->nome);
-        printf("Idade: %i\n", atual->dados->idade);
+        printf("Idade: %d\n", atual->dados->idade);
         printf("RG: %s\n", atual->dados->rg);
-        printf("Entrada: %i/%i/%i\n", atual->dados->entrada->dia,atual->dados->entrada->mes,atual->dados->entrada->ano);
+        printf("Entrada: %02d/%02d/%04d\n", atual->dados->entrada->dia,atual->dados->entrada->mes,atual->dados->entrada->ano);
         atual = atual->proximo;
     }
     printf("\n");
@@ -93,7 +93,7 @@ void remover_paciente(Lista *lista){
         atual = atual->proximo;
     }
     if(atual == NULL){
-        printf("Paciente não encontrado");
+        printf("Paciente não encontrado\n");
     }else{
         if (anterior == NULL && atual->proximo == NULL){
         lista->inicio = NULL;
@@ -128,17 +128,17 @@ void *atualiza_paciente(Lista *lista) {
             case 1:
                 printf("Digite o novo nome: ");
                 scanf("%s", paciente->dados->nome);
-                printf("Nome alterado!");
+                printf("Nome alterado!\n");
                 break;
             case 2:
                 printf("Digite a nova idade: ");
                 scanf("%d", &paciente->dados->idade);
-                printf("Idade alterada!");
+                printf("Idade alterada!\n");
                 break;
             case 3:
                 printf("Digite a RG: ");
                 scanf("%s", paciente->dados->rg);
-                printf("RG alterado!");
+                printf("RG alterado!\n");
                 break;
             case 4:
                 int opcaoData;

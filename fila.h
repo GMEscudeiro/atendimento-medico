@@ -30,17 +30,23 @@ void enqueue(Fila *fila){
     char rg[9];
     scanf("%s", rg);
     ELista *paciente = procura_paciente(fila->lista, rg);
-    Registro *dados = paciente->dados;
-    EFila *efilaNova = cria_efila(dados);
-    if(fila->head == NULL){
-        fila->head = efilaNova;
-    }else{
-        fila->tail->proximo = efilaNova;
-        efilaNova->anterior = fila->tail;
+    if(paciente != NULL) {
+        Registro *dados = paciente->dados;
+        EFila *efilaNova = cria_efila(dados);
+        if(fila->head == NULL){
+            fila->head = efilaNova;
+        }else{
+            fila->tail->proximo = efilaNova;
+            efilaNova->anterior = fila->tail;
+        }
+        fila->tail = efilaNova;
+        fila->qtde++;
+        push(fila->pilha, dados, 0);
+        printf("Paciente %s adicionado a fila\n", paciente->dados->nome);
+    }else {
+        printf("Paciente nao encontrado\n");
     }
-    fila->tail = efilaNova;
-    fila->qtde++;
-    push(fila->pilha, dados, 0);
+
 }
 
 void desfaz_enqueue(Fila *fila) {
@@ -52,6 +58,7 @@ void desfaz_enqueue(Fila *fila) {
 
 Registro* dequeue(Fila *fila){
     if(fila->head == NULL){
+        printf("Fila vazia\n");
         return NULL;
     }
     Registro* valor = fila->head->dados; // variavel que ira ser retornada

@@ -52,12 +52,13 @@ void salvar() {
 }
 
 void sobre() {
+    Data *data = inicializar_data();
     printf("Desenvolvedores: \n");
     printf("Nomes: Guilherme Escudeiro e Lucas Cabral\n");
     printf("Ciclo: 4º ciclo\n");
     printf("Curso: Ciencia da Computacao\n");
     printf("Disciplina: Estrutura de Dados\n");
-    printf("Data: 08/11/2024\n");
+    printf("Data: %d/%d/%d\n", data->dia, data->mes, data->ano);
 }
 
 #endif //MISC_H
