@@ -11,4 +11,6 @@ add_executable(Projeto
     lista.h
     main.c
     pilha.h
-    registro.h)
+    registro.h
+        misc.h
+        types.h)

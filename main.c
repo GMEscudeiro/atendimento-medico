@@ -1,60 +1,112 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <registro.h>
-#include <lista.h>
-#include <fila.h>
-#include <abb.h>
-#include <pilha.h>
+#include "lista.h"
+#include "abb.h"
+#include "pilha.h"
+#include "fila.h"
+#include "misc.h"
+#include "types.h"
 
 int main(void) {
-    
-    Lista *lista = inicializa_lista();
-    Fila *fila = inicializaFila();
+
+    ABB *arvore_ano = cria_arvore();
+    ABB *arvore_mes = cria_arvore();
+    ABB *arvore_dia = cria_arvore();
+    ABB *arvore_idade = cria_arvore();
+
+    Lista *lista = inicializar_lista(arvore_ano, arvore_mes, arvore_dia, arvore_idade);
+    Pilha *pilha = start_stack();
+    Fila *fila = cria_fila(pilha, lista);
+
     int opcao;
-    char rg[20];
+    char rg[9];
 
     do {
-        exibirMenu();
+        menuPrincipal();
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
 
         switch (opcao) {
             case 1:
-                inserir(lista);
+                menuCadastrar();
+                int opcaoCadastro;
+                printf("Escolha uma opcao: ");
+                scanf("%d", &opcaoCadastro);
+                switch (opcaoCadastro) {
+                    case 1:
+                        cadastrar_paciente(lista);
+                        break;
+                    case 2:
+                        mostra_paciente(lista);
+                        break;
+                    case 3:
+                        mostrar_lista(lista);
+                        break;
+                    case 4:
+                        atualiza_paciente(lista);
+                        break;
+                    case 5:
+                        remover_paciente(lista);
+                        break;
+                    default:
+                        printf("Opcao invalida\n");
+                }
                 break;
             case 2:
-                printf("Digite o RG do paciente a ser consultado: ");
-                scanf(" %19s", rg);
-                consultar(lista, rg);
+                menuAtendimento();
+                int opcaoAtendimento;
+                printf("Escolha uma opcao: ");
+                scanf("%d", &opcaoAtendimento);
+                switch (opcaoAtendimento) {
+                    case 1:
+                        enqueue(fila);
+                    break;
+                    case 2:
+                        dequeue(fila);
+                    break;
+                    case 3:
+                        show(fila);
+                    break;
+                    default:
+                        printf("Opcao invalida\n");
+                }
                 break;
             case 3:
-                listar(lista);
+                menuPesquisa();
+                int opcaoPesquisa;
+                printf("Escolha uma opcao: ");
+                scanf("%d", &opcaoPesquisa);
+                switch (opcaoPesquisa) {
+                    case 1:
+                        in_ordem(arvore_ano->raiz);
+                    break;
+                    case 2:
+                        in_ordem(arvore_mes->raiz);
+                    break;
+                    case 3:
+                        in_ordem(arvore_dia->raiz);
+                    break;
+                    case 4:
+                        in_ordem(arvore_idade->raiz);
+                    break;
+                    default:
+                        printf("Opcao invalida\n");
+                }
                 break;
             case 4:
-                printf("Digite o RG do paciente a ser atualizado: ");
-                scanf(" %19s", rg);
-                atualizar(lista, rg);
+                operacao(pilha, fila);
                 break;
             case 5:
-                printf("Digite o RG do paciente a ser removido: ");
-                scanf(" %19s", rg);
-                remover(lista, rg);
+                menuArquivo();
                 break;
             case 6:
-                enqueue(fila);
+                sobre();
                 break;
-            case 7:
-                dequeue(fila);
-                break;
-            case 8:
-                show(fila);
-                break;
-            case 9:
+            case 0:
                 printf("Saindo\n");
                 break;
             default:
                 printf("Opcao invalida.\n");
         }
-    } while (opcao != 9);
+    } while (opcao != 0);
     return 0;
 }

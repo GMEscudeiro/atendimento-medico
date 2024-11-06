@@ -1,23 +1,11 @@
-#ifndef REGISTRO
-#define REGISTRO
+#ifndef REGISTRO_H
+#define REGISTRO_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "types.h"
 
-typedef struct{
-    int dia;
-    int mes;
-    int ano;
-} Data;
-
-typedef struct{
-    char nome[50];
-    int idade;
-    char rg[9];
-    Data* entrada;
-} Registro;
-
-inline Data *inicializar_data(){
+Data *inicializar_data(){
     Data *data = malloc(sizeof(Data));
     time_t rawtime;
     rawtime = time(NULL);
@@ -29,7 +17,7 @@ inline Data *inicializar_data(){
     return data;
 }
 
-inline Registro *inicializar_registro(){
+Registro *inicializar_registro(){
     Registro *registro = malloc(sizeof(Registro));
     printf("Digite o nome: ");
     scanf("%s", registro->nome);

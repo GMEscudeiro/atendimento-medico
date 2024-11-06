@@ -1,18 +1,9 @@
+#ifndef ABB_H
+#define ABB_H
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <registro.h>
-
-typedef struct EABB{
-  Registro* dados;
-  struct EABB* filhoesq;
-  struct EABB* filhodir;
-  struct EABB* pai;
-} EABB;
-
-typedef struct ABB{
-  EABB* raiz;
-  int qtde;
-} ABB;
+#include "types.h"
 
 void in_ordem(EABB *raiz) {
   if(raiz == NULL){
@@ -146,7 +137,7 @@ void inserir_idade(ABB* arvore, Registro* dados){
 
 Registro* remover_vertice(ABB* arvore, EABB* vertice) {
   if(vertice == NULL){
-    return -1;
+    return NULL;
   }
   Registro *tempvalor = vertice->dados;
   if(vertice->filhoesq == NULL && vertice->filhodir == NULL){
@@ -206,3 +197,5 @@ void liberar_arvore(EABB* vertice) {
         free(vertice);
     }
 }
+
+#endif

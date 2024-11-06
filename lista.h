@@ -1,19 +1,12 @@
-#include <registro.h>
+#ifndef LISTA_H
+#define LISTA_H
+
 #include <stdio.h>
 #include <stdlib.h>
-
-#ifndef LISTA
-#define LISTA
-
-typedef struct Elista{
-    Registro* dados;
-    struct Elista* proximo;
-} ELista;
-
-typedef struct{
-    ELista* inicio;
-    int qtde;
-} Lista;
+#include <string.h>
+#include "registro.h"
+#include "abb.h"
+#include "types.h"
 
 ELista *inicializar_elista(Registro *registro){
   ELista *elista = malloc(sizeof(ELista));
@@ -22,9 +15,13 @@ ELista *inicializar_elista(Registro *registro){
   return elista;
 }
 
-Lista *inicializar_lista() {
+Lista *inicializar_lista(ABB *arvore_ano, ABB *arvore_mes, ABB *arvore_dia, ABB *arvore_idade) {
     Lista *lista = malloc(sizeof(Lista));
     lista->inicio = NULL;
+    lista->arvore_ano = arvore_ano;
+    lista->arvore_mes = arvore_mes;
+    lista->arvore_dia = arvore_dia;
+    lista->arvore_idade = arvore_idade;
     lista->qtde = 0;
     return lista;
 }
@@ -40,11 +37,15 @@ void cadastrar_paciente(Lista *lista) {
         lista->inicio = novo;
         lista->qtde++;
     }
+    inserir_ano(lista->arvore_ano, registro);
+    inserir_mes(lista->arvore_mes, registro);
+    inserir_dia(lista->arvore_dia, registro);
+    inserir_idade(lista->arvore_idade, registro);
 }
 
 ELista *procura_paciente(Lista *lista, char rg[]){
     ELista *atual = lista->inicio;
-    while (atual != NULL && atual->dados->rg != rg){
+    while (atual != NULL && strcmp(atual->dados->rg, rg) != 0){
         atual = atual->proximo;
     }
     if(atual == NULL){
@@ -76,6 +77,7 @@ void mostrar_lista(Lista *lista) {
         printf("Idade: %i\n", atual->dados->idade);
         printf("RG: %s\n", atual->dados->rg);
         printf("Entrada: %i/%i/%i\n", atual->dados->entrada->dia,atual->dados->entrada->mes,atual->dados->entrada->ano);
+        atual = atual->proximo;
     }
     printf("\n");
 }
@@ -86,7 +88,7 @@ void remover_paciente(Lista *lista){
     scanf("%s", rg);
     ELista *atual = lista->inicio;
     ELista *anterior = NULL;
-    while (atual != NULL && atual->dados->rg != rg){
+    while (atual != NULL && strcmp(atual->dados->rg, rg) != 0){
         anterior = atual;
         atual = atual->proximo;
     }
@@ -126,15 +128,21 @@ void *atualiza_paciente(Lista *lista) {
             case 1:
                 printf("Digite o novo nome: ");
                 scanf("%s", paciente->dados->nome);
+                printf("Nome alterado!");
+                break;
             case 2:
                 printf("Digite a nova idade: ");
-                scanf("%s", paciente->dados->idade);
+                scanf("%d", &paciente->dados->idade);
+                printf("Idade alterada!");
+                break;
             case 3:
                 printf("Digite a RG: ");
                 scanf("%s", paciente->dados->rg);
+                printf("RG alterado!");
+                break;
             case 4:
                 int opcaoData;
-                printf("Qual deseja alterar: ");
+                printf("Qual deseja alterar: \n");
                 printf("1 - Dia\n");
                 printf("2 - Mes\n");
                 printf("3 - Ano\n");
@@ -142,14 +150,24 @@ void *atualiza_paciente(Lista *lista) {
                 switch (opcaoData) {
                     case 1:
                         printf("Digite o novo dia: ");
-                    scanf("%d", paciente->dados->entrada->dia);
+                        scanf("%d", &paciente->dados->entrada->dia);
+                        printf("Dia alterado!\n");
+                        break;
                     case 2:
                         printf("Digite o novo mes: ");
-                    scanf("%d", paciente->dados->entrada->mes);
+                        scanf("%d", &paciente->dados->entrada->mes);
+                        printf("Mes alterado!\n");
+                        break;
                     case 3:
                         printf("Digite o novo ano: ");
-                    scanf("%d", paciente->dados->entrada->ano);
+                        scanf("%d", &paciente->dados->entrada->ano);
+                        printf("Ano alterado!\n");
+                        break;
+                    default:
+                        printf("Opcao invalida!\n");
+                     break;
                 }
+                break;
         }
     }
 }
