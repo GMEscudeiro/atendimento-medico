@@ -51,8 +51,15 @@ void enqueue(Fila *fila){
 
 void desfaz_enqueue(Fila *fila) {
     EFila *temp = fila->tail;
+    if(fila->qtde == 1) {
+        fila->tail = NULL;
+        fila->head = NULL;
+        fila->qtde--;
+        return;
+    }
     fila->tail->anterior->proximo = NULL;
     fila->tail = fila->tail->anterior;
+    fila->qtde--;
     free(temp);
 }
 
@@ -65,20 +72,29 @@ Registro* dequeue(Fila *fila){
     EFila *temp = fila->head; // efila que sera removida
     push(fila->pilha, valor, 1);
     if(fila->head->proximo == NULL){
+        fila->head = NULL;
         fila->tail = NULL;
     }else{
         fila->head = fila->head->proximo;
     }
     free(temp);
     fila->qtde--;
+    printf("Paciente %s removido\n", valor->nome);
     return valor;
 }
 
 void desfaz_dequeue(Fila *fila, Registro *dados) {
     EFila *novo = cria_efila(dados);
-    fila->head->anterior = novo;
+    if(fila->qtde == 0) {
+        fila->head = novo;
+        fila->tail = novo;
+        fila->qtde++;
+        return;
+    }
     novo->proximo = fila->head;
+    fila->head->anterior = novo;
     fila->head = novo;
+    fila->qtde++;
 }
 
 void show(Fila *fila){
@@ -109,8 +125,8 @@ void operacao(Pilha *stack, Fila *fila) {
             printf("Deseja desfaze-la? (s/n): ");
             scanf(" %c", &opcao);
             if(opcao == 's') {
-                Celula *valor = pop(stack);
-                desfaz_dequeue(fila, valor->dados);
+                Registro *valor = pop(stack);
+                desfaz_dequeue(fila, valor);
             }
         }
     }
