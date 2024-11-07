@@ -5,15 +5,16 @@
 #include <time.h>
 #include "types.h"
 
-Data *inicializar_data(){
+Data* inicializar_data() {
     Data *data = malloc(sizeof(Data));
     time_t rawtime;
     rawtime = time(NULL);
     struct tm *tm_local = localtime(&rawtime);
 
     data->dia = tm_local->tm_mday;
-    data->mes = tm_local->tm_mon;
-    data->ano = tm_local->tm_year;
+    data->mes = tm_local->tm_mon + 1; // Adicionando 1 para corrigir o mês
+    data->ano = tm_local->tm_year + 1900; // Adicionando 1900 para corrigir o ano
+
     return data;
 }
 

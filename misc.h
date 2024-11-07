@@ -44,12 +44,72 @@ void menuArquivo() {
     printf("0 - Voltar\n");
 }
 
-void carregar() {
+
+int salvar(Lista *lista, char nome[]) {
+    FILE *arquivo = fopen(nome, "w");
+
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    ELista *atual = lista->inicio;
+
+    while (atual != NULL) {
+        fwrite(&atual->dados, sizeof(Registro), 1, arquivo);
+        atual = atual->proximo;
+    }
+
+    fclose(arquivo);
+    return 0;
 }
 
-void salvar() {
 
+int carregar(Lista *lista, char nome[]) {
+    FILE *arquivo = fopen(nome, "r");
+
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    Registro paciente;
+    while (fread(&paciente, sizeof(Registro), 1, arquivo)) {
+        Registro *novo_paciente = malloc(sizeof(Registro));
+        if (novo_paciente == NULL) {
+            printf("Erro ao alocar memória para o paciente.\n");
+            fclose(arquivo);
+            return 1;
+        }
+        memcpy(novo_paciente, &paciente, sizeof(Registro));
+        novo_paciente->entrada = malloc(sizeof(Data));
+        if (novo_paciente->entrada == NULL) {
+            printf("Erro ao alocar memória para a data de entrada.\n");
+            free(novo_paciente);
+            fclose(arquivo);
+            return 1;
+        }
+        ELista *novo = inicializar_elista(novo_paciente);
+        if (lista->inicio == NULL) {
+            lista->inicio = novo;
+        } else {
+            ELista *atual = lista->inicio;
+            while (atual->proximo != NULL) {
+                atual = atual->proximo;
+            }
+            atual->proximo = novo;
+        }
+
+        lista->qtde++;
+    }
+
+    fclose(arquivo);
+    return 0;
 }
+
+
+
+
 
 void sobre() {
     Data *data = inicializar_data();

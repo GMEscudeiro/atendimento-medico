@@ -63,15 +63,15 @@ Registro* dequeue(Fila *fila){
     }
     Registro* valor = fila->head->dados; // variavel que ira ser retornada
     EFila *temp = fila->head; // efila que sera removida
-    fila->head = fila->head->proximo;
-    fila->head->anterior = NULL;
+    push(fila->pilha, valor, 1);
     if(fila->head->proximo == NULL){
         fila->tail = NULL;
+    }else{
+        fila->head = fila->head->proximo;
     }
     free(temp);
     fila->qtde--;
     return valor;
-    push(fila->pilha, valor, 1);
 }
 
 void desfaz_dequeue(Fila *fila, Registro *dados) {

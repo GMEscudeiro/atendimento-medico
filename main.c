@@ -17,6 +17,15 @@ int main(void) {
     Pilha *pilha = start_stack();
     Fila *fila = cria_fila(pilha, lista);
 
+    int cod;
+
+    // Carregar a lista de clientes no início do programa
+    cod = carregar(lista, "clientes.dat");
+
+    if (cod == 1) {
+        printf("Arquivo de clientes não encontrado, criando novo arquivo.\n");
+    }
+
     int opcao;
     char rg[9];
 
@@ -59,13 +68,13 @@ int main(void) {
                 switch (opcaoAtendimento) {
                     case 1:
                         enqueue(fila);
-                    break;
+                        break;
                     case 2:
                         dequeue(fila);
-                    break;
+                        break;
                     case 3:
                         show(fila);
-                    break;
+                        break;
                     default:
                         printf("Opcao invalida\n");
                 }
@@ -78,16 +87,16 @@ int main(void) {
                 switch (opcaoPesquisa) {
                     case 1:
                         in_ordem(arvore_ano->raiz);
-                    break;
+                        break;
                     case 2:
                         in_ordem(arvore_mes->raiz);
-                    break;
+                        break;
                     case 3:
                         in_ordem(arvore_dia->raiz);
-                    break;
+                        break;
                     case 4:
                         in_ordem(arvore_idade->raiz);
-                    break;
+                        break;
                     default:
                         printf("Opcao invalida\n");
                 }
@@ -97,16 +106,43 @@ int main(void) {
                 break;
             case 5:
                 menuArquivo();
+                int opcaoArquivo;
+                printf("Escolha uma opcao: ");
+                scanf("%d", &opcaoArquivo);
+
+                switch (opcaoArquivo) {
+                    case 1:
+                        if (carregar(lista, "pacientes.dat") == 0) {
+                            printf("Pacientes carregados com sucesso!\n");
+                        } else {
+                            printf("Erro ao carregar os pacientes.\n");
+                        }
+                        break;
+                    case 2:
+                        if (salvar(lista,  "pacientes.dat") == 0) {
+                            printf("Pacientes salvos com sucesso!\n");
+                        } else {
+                            printf("Erro ao salvar os pacientes.\n");
+                        }
+                        break;
+                    default:
+                        printf("Opcao invalida!\n");
+                        break;
+                }
                 break;
+
             case 6:
                 sobre();
                 break;
+
             case 0:
                 printf("Saindo\n");
                 break;
+
             default:
                 printf("Opcao invalida.\n");
         }
     } while (opcao != 0);
+
     return 0;
 }

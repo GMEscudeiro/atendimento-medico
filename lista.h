@@ -109,14 +109,14 @@ void remover_paciente(Lista *lista){
     }
 }
 
-void *atualiza_paciente(Lista *lista) {
+void atualiza_paciente(Lista *lista) {
     printf("Digite o RG (sem caracteres especiais): ");
     char rg[9];
     scanf("%s", rg);
     ELista *paciente = procura_paciente(lista, rg);
-    if(paciente == NULL){
+    if (paciente == NULL) {
         printf("Paciente nao encontrado\n");
-    }else {
+    } else {
         int opcao;
         printf("Escolha qual dado deseja atualizar:\n");
         printf("1 - Nome\n");
@@ -124,6 +124,7 @@ void *atualiza_paciente(Lista *lista) {
         printf("3 - RG\n");
         printf("4 - Entrada\n");
         scanf("%d", &opcao);
+
         switch (opcao) {
             case 1:
                 printf("Digite o novo nome: ");
@@ -136,15 +137,16 @@ void *atualiza_paciente(Lista *lista) {
                 printf("Idade alterada!\n");
                 break;
             case 3:
-                printf("Digite a RG: ");
+                printf("Digite o novo RG: ");
                 scanf("%s", paciente->dados->rg);
                 printf("RG alterado!\n");
                 break;
             case 4:
-                int opcaoData;
-                printf("Qual deseja alterar: \n");
+            {
+                int opcaoData;  // Agora a variável opcaoData é declarada dentro do escopo do switch
+                printf("Qual deseja alterar da entrada?\n");
                 printf("1 - Dia\n");
-                printf("2 - Mes\n");
+                printf("2 - Mês\n");
                 printf("3 - Ano\n");
                 scanf("%d", &opcaoData);
                 switch (opcaoData) {
@@ -154,9 +156,9 @@ void *atualiza_paciente(Lista *lista) {
                         printf("Dia alterado!\n");
                         break;
                     case 2:
-                        printf("Digite o novo mes: ");
+                        printf("Digite o novo mês: ");
                         scanf("%d", &paciente->dados->entrada->mes);
-                        printf("Mes alterado!\n");
+                        printf("Mês alterado!\n");
                         break;
                     case 3:
                         printf("Digite o novo ano: ");
@@ -164,11 +166,17 @@ void *atualiza_paciente(Lista *lista) {
                         printf("Ano alterado!\n");
                         break;
                     default:
-                        printf("Opcao invalida!\n");
-                     break;
+                        printf("Opção inválida!\n");
+                        break;
                 }
+            }
+                break;
+            default:
+                printf("Opção inválida!\n");
                 break;
         }
     }
 }
+
+
 #endif
