@@ -1,7 +1,10 @@
 #ifndef MISC_H
 #define MISC_H
+
 #include <stdio.h>
 #include <stdlib.h>
+#include "lista.h"
+
 
 void menuPrincipal() {
     printf("1 - Cadastrar\n");
@@ -32,7 +35,7 @@ void menuAtendimento() {
 void menuPesquisa() {
     printf("Mostrar registros ordenados por:\n");
     printf("1 - Ano de registro\n");
-    printf("2 - Mes de registro\n");
+    printf("2 - Mês de registro\n");
     printf("3 - Dia de registro\n");
     printf("4 - Idade do paciente\n");
     printf("0 - Voltar\n");
@@ -47,78 +50,64 @@ void menuArquivo() {
 
 int salvar(Lista *lista, char nome[]) {
     FILE *arquivo = fopen(nome, "w");
-
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+        printf("Erro ao abrir o arquivo para escrita.\n");
         return 1;
     }
 
     ELista *atual = lista->inicio;
-
     while (atual != NULL) {
-        fwrite(&atual->dados, sizeof(Registro), 1, arquivo);
+        fprintf(arquivo, "Nome: %s, Idade: %d, RG: %s, Data de Entrada: %02d/%02d/%04d\n",
+                atual->dados->nome, atual->dados->idade, atual->dados->rg,
+                atual->dados->entrada->dia, atual->dados->entrada->mes, atual->dados->entrada->ano);
         atual = atual->proximo;
     }
 
     fclose(arquivo);
+    printf("Dados salvos no arquivo.\n");
     return 0;
 }
 
 
 int carregar(Lista *lista, char nome[]) {
     FILE *arquivo = fopen(nome, "r");
-
     if (arquivo == NULL) {
-        printf("Erro ao abrir o arquivo.\n");
+        printf("Erro ao abrir o arquivo '%s' para leitura.\n", nome);
         return 1;
     }
 
-    Registro paciente;
-    while (fread(&paciente, sizeof(Registro), 1, arquivo)) {
-        Registro *novo_paciente = malloc(sizeof(Registro));
-        if (novo_paciente == NULL) {
-            printf("Erro ao alocar memória para o paciente.\n");
-            fclose(arquivo);
-            return 1;
-        }
-        memcpy(novo_paciente, &paciente, sizeof(Registro));
-        novo_paciente->entrada = malloc(sizeof(Data));
-        if (novo_paciente->entrada == NULL) {
-            printf("Erro ao alocar memória para a data de entrada.\n");
-            free(novo_paciente);
-            fclose(arquivo);
-            return 1;
-        }
-        ELista *novo = inicializar_elista(novo_paciente);
-        if (lista->inicio == NULL) {
-            lista->inicio = novo;
-        } else {
-            ELista *atual = lista->inicio;
-            while (atual->proximo != NULL) {
-                atual = atual->proximo;
-            }
-            atual->proximo = novo;
+    char linha[256];
+    while (fgets(linha, sizeof(linha), arquivo) != NULL) {
+        Registro *registro = malloc(sizeof(Registro));
+        registro->entrada = malloc(sizeof(Data));
+
+        if (sscanf(linha, "Nome: %[^,], Idade: %d, RG: %[^,], Data de Entrada: %d/%d/%d",
+                   registro->nome, &registro->idade, registro->rg,
+                   &registro->entrada->dia, &registro->entrada->mes, &registro->entrada->ano) != 6) {
+            printf("Erro ao ler linha: '%s'\n", linha);
+            free(registro->entrada);
+            free(registro);
+            continue;
         }
 
+        ELista *novo = inicializar_elista(registro);
+        novo->proximo = lista->inicio;
+        lista->inicio = novo;
         lista->qtde++;
     }
 
     fclose(arquivo);
+    printf("Dados da lista carregados do arquivo.\n");
     return 0;
 }
 
 
-
-
-
 void sobre() {
-    Data *data = inicializar_data();
-    printf("Desenvolvedores: \n");
+    printf("Desenvolvedores:\n");
     printf("Nomes: Guilherme Escudeiro e Lucas Cabral\n");
     printf("Ciclo: 4º ciclo\n");
-    printf("Curso: Ciencia da Computacao\n");
+    printf("Curso: Ciência da Computação\n");
     printf("Disciplina: Estrutura de Dados\n");
-    printf("Data: %d/%d/%d\n", data->dia, data->mes, data->ano);
 }
 
-#endif //MISC_H
+#endif // MISC_H

@@ -6,6 +6,7 @@
 #include "misc.h"
 #include "types.h"
 
+
 int main(void) {
 
     ABB *arvore_ano = cria_arvore();
@@ -19,8 +20,7 @@ int main(void) {
 
     int cod;
 
-    // Carregar a lista de clientes no início do programa
-    cod = carregar(lista, "clientes.dat");
+    cod = carregar(lista, "pacientes.dat");
 
     if (cod == 1) {
         printf("Arquivo de clientes não encontrado, criando novo arquivo.\n");
@@ -30,6 +30,7 @@ int main(void) {
     char rg[9];
 
     do {
+
         menuPrincipal();
         printf("Escolha uma opcao: ");
         scanf("%d", &opcao);
@@ -60,6 +61,7 @@ int main(void) {
                         printf("Opcao invalida\n");
                 }
                 break;
+
             case 2:
                 menuAtendimento();
                 int opcaoAtendimento;
@@ -79,6 +81,7 @@ int main(void) {
                         printf("Opcao invalida\n");
                 }
                 break;
+
             case 3:
                 menuPesquisa();
                 int opcaoPesquisa;
@@ -101,15 +104,16 @@ int main(void) {
                         printf("Opcao invalida\n");
                 }
                 break;
+
             case 4:
                 operacao(pilha, fila);
                 break;
-            case 5:
+
+            case 5: {
                 menuArquivo();
                 int opcaoArquivo;
                 printf("Escolha uma opcao: ");
                 scanf("%d", &opcaoArquivo);
-
                 switch (opcaoArquivo) {
                     case 1:
                         if (carregar(lista, "pacientes.dat") == 0) {
@@ -119,7 +123,7 @@ int main(void) {
                         }
                         break;
                     case 2:
-                        if (salvar(lista,  "pacientes.dat") == 0) {
+                        if (salvar(lista, "pacientes.dat") == 0) {
                             printf("Pacientes salvos com sucesso!\n");
                         } else {
                             printf("Erro ao salvar os pacientes.\n");
@@ -127,9 +131,9 @@ int main(void) {
                         break;
                     default:
                         printf("Opcao invalida!\n");
-                        break;
                 }
                 break;
+            }
 
             case 6:
                 sobre();
