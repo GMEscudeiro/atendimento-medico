@@ -10,7 +10,7 @@ void in_ordem(EABB *raiz) {
     return;
   }else{
     in_ordem(raiz->filhoesq);
-    printf("Nome: %s RG: %s Entrada: %d/%d/%d\n", raiz->dados->nome, raiz->dados->rg, raiz->dados->entrada->dia,
+    printf("Nome: %s RG: %s Idade: %d Entrada: %d/%d/%d\n", raiz->dados->nome, raiz->dados->rg, raiz->dados->idade, raiz->dados->entrada->dia,
       raiz->dados->entrada->mes, raiz->dados->entrada->ano);
     in_ordem(raiz->filhodir);
   }
@@ -133,6 +133,46 @@ void inserir_idade(ABB* arvore, Registro* dados){
     novo->pai = anterior;
   }
   arvore->qtde++;
+}
+
+ABB *atualiza_arvore_ano(Lista *lista) {
+  ABB* novo = cria_arvore();
+  ELista *atual = lista->inicio;
+  while (atual != NULL){
+    inserir_ano(novo, atual->dados);
+    atual = atual->proximo;
+  }
+  return novo;
+}
+
+ABB *atualiza_arvore_mes(Lista *lista) {
+  ABB* novo = cria_arvore();
+  ELista *atual = lista->inicio;
+  while (atual != NULL){
+    inserir_mes(novo, atual->dados);
+    atual = atual->proximo;
+  }
+  return novo;
+}
+
+ABB *atualiza_arvore_dia(Lista *lista) {
+  ABB* novo = cria_arvore();
+  ELista *atual = lista->inicio;
+  while (atual != NULL){
+    inserir_dia(novo, atual->dados);
+    atual = atual->proximo;
+  }
+  return novo;
+}
+
+ABB *atualiza_arvore_idade(Lista *lista) {
+  ABB* novo = cria_arvore();
+  ELista *atual = lista->inicio;
+  while (atual != NULL){
+    inserir_idade(novo, atual->dados);
+    atual = atual->proximo;
+  }
+  return novo;
 }
 
 Registro* remover_vertice(ABB* arvore, EABB* vertice) {

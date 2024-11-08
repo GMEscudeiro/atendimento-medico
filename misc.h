@@ -91,8 +91,14 @@ int carregar(Lista *lista, char nome[]) {
         }
 
         ELista *novo = inicializar_elista(registro);
-        novo->proximo = lista->inicio;
-        lista->inicio = novo;
+        if (lista->inicio == NULL){
+            lista->inicio = novo;
+            lista->qtde++;
+        } else{
+            novo->proximo = lista->inicio;
+            lista->inicio = novo;
+            lista->qtde++;
+        }
         lista->qtde++;
     }
 

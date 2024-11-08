@@ -89,15 +89,35 @@ int main(void) {
                 scanf("%d", &opcaoPesquisa);
                 switch (opcaoPesquisa) {
                     case 1:
+                        arvore_ano = atualiza_arvore_ano(lista);
+                        if(arvore_ano->qtde == 0) {
+                            printf("Arvore Vazia\n");
+                            break;
+                        }
                         in_ordem(arvore_ano->raiz);
                         break;
                     case 2:
+                        arvore_mes = atualiza_arvore_mes(lista);
+                        if(arvore_mes->qtde == 0) {
+                            printf("Arvore Vazia\n");
+                            break;
+                        }
                         in_ordem(arvore_mes->raiz);
                         break;
                     case 3:
+                        arvore_dia = atualiza_arvore_dia(lista);
+                        if(arvore_dia->qtde == 0) {
+                            printf("Arvore Vazia\n");
+                            break;
+                        }
                         in_ordem(arvore_dia->raiz);
                         break;
                     case 4:
+                        arvore_idade = atualiza_arvore_idade(lista);
+                        if(arvore_idade->qtde == 0) {
+                            printf("Arvore Vazia\n");
+                            break;
+                        }
                         in_ordem(arvore_idade->raiz);
                         break;
                     default:

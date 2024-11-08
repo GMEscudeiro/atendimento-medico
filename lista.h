@@ -37,10 +37,6 @@ void cadastrar_paciente(Lista *lista) {
         lista->inicio = novo;
         lista->qtde++;
     }
-    inserir_ano(lista->arvore_ano, registro);
-    inserir_mes(lista->arvore_mes, registro);
-    inserir_dia(lista->arvore_dia, registro);
-    inserir_idade(lista->arvore_idade, registro);
 }
 
 ELista *procura_paciente(Lista *lista, char rg[]){
@@ -122,7 +118,6 @@ void atualiza_paciente(Lista *lista) {
         printf("1 - Nome\n");
         printf("2 - Idade\n");
         printf("3 - RG\n");
-        printf("4 - Entrada\n");
         scanf("%d", &opcao);
 
         switch (opcao) {
@@ -140,36 +135,6 @@ void atualiza_paciente(Lista *lista) {
                 printf("Digite o novo RG: ");
                 scanf("%s", paciente->dados->rg);
                 printf("RG alterado!\n");
-                break;
-            case 4:
-            {
-                int opcaoData;  // Agora a variável opcaoData é declarada dentro do escopo do switch
-                printf("Qual deseja alterar da entrada?\n");
-                printf("1 - Dia\n");
-                printf("2 - Mês\n");
-                printf("3 - Ano\n");
-                scanf("%d", &opcaoData);
-                switch (opcaoData) {
-                    case 1:
-                        printf("Digite o novo dia: ");
-                        scanf("%d", &paciente->dados->entrada->dia);
-                        printf("Dia alterado!\n");
-                        break;
-                    case 2:
-                        printf("Digite o novo mês: ");
-                        scanf("%d", &paciente->dados->entrada->mes);
-                        printf("Mês alterado!\n");
-                        break;
-                    case 3:
-                        printf("Digite o novo ano: ");
-                        scanf("%d", &paciente->dados->entrada->ano);
-                        printf("Ano alterado!\n");
-                        break;
-                    default:
-                        printf("Opção inválida!\n");
-                        break;
-                }
-            }
                 break;
             default:
                 printf("Opção inválida!\n");
