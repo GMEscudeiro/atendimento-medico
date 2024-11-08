@@ -44,10 +44,6 @@ typedef struct ABB{
 
 typedef struct{
     ELista* inicio;
-    ABB *arvore_ano;
-    ABB *arvore_mes;
-    ABB *arvore_dia;
-    ABB *arvore_idade;
     int qtde;
 } Lista;
 
@@ -60,8 +56,6 @@ typedef struct EFila{
 typedef struct{
     EFila* head;
     EFila* tail;
-    Pilha* pilha;
-    Lista* lista;
     int qtde;
 } Fila;
 

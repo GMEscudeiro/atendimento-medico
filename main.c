@@ -59,6 +59,7 @@ int main(void) {
                         break;
                     default:
                         printf("Opcao invalida\n");
+                        break;
                 }
                 break;
 
@@ -69,10 +70,10 @@ int main(void) {
                 scanf("%d", &opcaoAtendimento);
                 switch (opcaoAtendimento) {
                     case 1:
-                        enqueue(fila);
+                        enqueue(fila, pilha, lista);
                         break;
                     case 2:
-                        dequeue(fila);
+                        dequeue(fila, pilha);
                         break;
                     case 3:
                         show(fila);

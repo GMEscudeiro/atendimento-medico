@@ -15,13 +15,9 @@ ELista *inicializar_elista(Registro *registro){
   return elista;
 }
 
-Lista *inicializar_lista(ABB *arvore_ano, ABB *arvore_mes, ABB *arvore_dia, ABB *arvore_idade) {
+Lista *inicializar_lista() {
     Lista *lista = malloc(sizeof(Lista));
     lista->inicio = NULL;
-    lista->arvore_ano = arvore_ano;
-    lista->arvore_mes = arvore_mes;
-    lista->arvore_dia = arvore_dia;
-    lista->arvore_idade = arvore_idade;
     lista->qtde = 0;
     return lista;
 }

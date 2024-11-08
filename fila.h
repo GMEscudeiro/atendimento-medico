@@ -15,21 +15,19 @@ EFila *cria_efila(Registro *registro){
   return efila;
 }
 
-Fila *cria_fila(Pilha *pilha, Lista *lista){
+Fila *cria_fila(){
   Fila *fila = malloc(sizeof(Fila));
   fila->head = NULL;
   fila->tail = NULL;
-  fila->pilha = pilha;
-  fila->lista = lista;
   fila->qtde = 0;
   return fila;
 }
 
-void enqueue(Fila *fila){
+void enqueue(Fila *fila, Pilha *pilha, Lista *lista){
     printf("Digite o RG do paciente: ");
     char rg[9];
     scanf("%s", rg);
-    ELista *paciente = procura_paciente(fila->lista, rg);
+    ELista *paciente = procura_paciente(lista, rg);
     if(paciente != NULL) {
         Registro *dados = paciente->dados;
         EFila *efilaNova = cria_efila(dados);
@@ -41,7 +39,7 @@ void enqueue(Fila *fila){
         }
         fila->tail = efilaNova;
         fila->qtde++;
-        push(fila->pilha, dados, 0);
+        push(pilha, dados, 0);
         printf("Paciente %s adicionado a fila\n", paciente->dados->nome);
     }else {
         printf("Paciente nao encontrado\n");
@@ -63,14 +61,14 @@ void desfaz_enqueue(Fila *fila) {
     free(temp);
 }
 
-Registro* dequeue(Fila *fila){
+Registro* dequeue(Fila *fila, Pilha *pilha){
     if(fila->head == NULL){
         printf("Fila vazia\n");
         return NULL;
     }
     Registro* valor = fila->head->dados; // variavel que ira ser retornada
     EFila *temp = fila->head; // efila que sera removida
-    push(fila->pilha, valor, 1);
+    push(pilha, valor, 1);
     if(fila->head->proximo == NULL){
         fila->head = NULL;
         fila->tail = NULL;
